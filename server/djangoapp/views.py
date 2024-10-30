@@ -17,18 +17,18 @@ def login_user(request):
     """Authenticate user and log them in."""
     data = json.loads(request.body)
     username = data.get('userName')
-     password = data.get('password')
+    password = data.get('password')
 
-      user = authenticate(username=username, password=password)
-       if user is not None:
-            login(request, user)
-            return JsonResponse({
-                "userName": username, "status": "Authenticated"
-            })
-        else:
-            return JsonResponse({
-                "userName": username, "status": "Unauthenticated"
-            })
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return JsonResponse({
+            "userName": username, "status": "Authenticated"
+        })
+    else:
+        return JsonResponse({
+            "userName": username, "status": "Unauthenticated"
+        })
     except json.JSONDecodeError as e:
         logger.error(f"Error decoding JSON: {e}")
         return JsonResponse({"error": "Invalid JSON"}, status=400)
