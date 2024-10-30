@@ -29,12 +29,6 @@ def login_user(request):
         return JsonResponse({
             "userName": username, "status": "Unauthenticated"
         })
-    except json.JSONDecodeError as e:
-        logger.error(f"Error decoding JSON: {e}")
-        return JsonResponse({"error": "Invalid JSON"}, status=400)
-    except Exception as e:
-        logger.error(f"An error occurred: {e}")
-        return JsonResponse({"error": "An error occurred"}, status=500)
 
 
 def logout_request(request):
@@ -60,9 +54,9 @@ def registration(request):
             }, status=400)
 
         user = User.objects.create_user(
-            username=username, 
+            username=username,
             first_name=first_name,
-            last_name=last_name, 
+            last_name=last_name,
             password=password,
             email=email
         )
@@ -85,7 +79,7 @@ def get_cars(request):
 
     car_models = CarModel.objects.select_related('car_make')
     cars = [{
-        "CarModel": car_model.name, 
+        "CarModel": car_model.name,
         "CarMake": car_model.car_make.name}
         for car_model in car_models]
 
