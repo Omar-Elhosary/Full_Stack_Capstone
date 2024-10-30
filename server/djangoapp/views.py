@@ -1,6 +1,5 @@
 import json
 import logging
-from django.shortcuts import redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import logout, login, authenticate
 from django.http import JsonResponse
@@ -16,17 +15,20 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def login_user(request):
     """Authenticate user and log them in."""
-    try:
-        data = json.loads(request.body)
-        username = data.get('userName')
-        password = data.get('password')
+    data = json.loads(request.body)
+    username = data.get('userName')
+     password = data.get('password')
 
-        user = authenticate(username=username, password=password)
-        if user is not None:
+      user = authenticate(username=username, password=password)
+       if user is not None:
             login(request, user)
-            return JsonResponse({"userName": username, "status": "Authenticated"})
+            return JsonResponse({
+                "userName": username, "status": "Authenticated"
+            })
         else:
-            return JsonResponse({"userName": username, "status": "Unauthenticated"})
+            return JsonResponse({
+                "userName": username, "status": "Unauthenticated"
+            })
     except json.JSONDecodeError as e:
         logger.error(f"Error decoding JSON: {e}")
         return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -53,13 +55,21 @@ def registration(request):
         email = data.get('email')
 
         if User.objects.filter(username=username).exists():
-            return JsonResponse({"userName": username, "error": "Already Registered"}, status=400)
+            return JsonResponse({
+                "userName": username, "error": "Already Registered"
+            }, status=400)
 
-        user = User.objects.create_user(username=username, first_name=first_name,
-                                        last_name=last_name, password=password,
-                                        email=email)
+        user = User.objects.create_user(
+            username=username, 
+            first_name=first_name,
+            last_name=last_name, 
+            password=password,
+            email=email
+        )
         login(request, user)
-        return JsonResponse({"userName": username, "status": "Authenticated"})
+        return JsonResponse({
+            "userName": username, "status": "Authenticated"
+        })
     except json.JSONDecodeError as e:
         logger.error(f"Error decoding JSON: {e}")
         return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -74,8 +84,10 @@ def get_cars(request):
         initiate()
 
     car_models = CarModel.objects.select_related('car_make')
-    cars = [{"CarModel": car_model.name, "CarMake": car_model.car_make.name}
-            for car_model in car_models]
+    cars = [{
+        "CarModel": car_model.name, 
+        "CarMake": car_model.car_make.name}
+        for car_model in car_models]
 
     return JsonResponse({"CarModels": cars})
 
@@ -89,7 +101,9 @@ def submit_review(request):
         car_model_id = data.get('carModelId')
 
         if not review_text or not car_model_id:
-            return JsonResponse({"error": "Review text and car model ID are required"}, status=400)
+            return JsonResponse({
+                "error": "Review text and car model ID are required"
+            }, status=400)
 
         # Analyze the sentiment of the review
         sentiment = analyze_review_sentiments(review_text)
@@ -97,7 +111,9 @@ def submit_review(request):
         # Post the review (this may depend on your API implementation)
         post_response = post_review(car_model_id, review_text, sentiment)
 
-        return JsonResponse({"status": "Review submitted", "sentiment": sentiment})
+        return JsonResponse({
+            "status": "Review submitted", "sentiment": sentiment
+        })
     except json.JSONDecodeError as e:
         logger.error(f"Error decoding JSON: {e}")
         return JsonResponse({"error": "Invalid JSON"}, status=400)
@@ -114,7 +130,9 @@ def get_reviews(request):
         car_model_id = data.get('carModelId')
 
         if not car_model_id:
-            return JsonResponse({"error": "Car model ID is required"}, status=400)
+            return JsonResponse({
+                "error": "Car model ID is required"
+            }, status=400)
 
         # Update with your actual API endpoint
         reviews = get_request(f'/reviews/{car_model_id}')
