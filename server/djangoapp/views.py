@@ -102,9 +102,6 @@ def submit_review(request):
         # Analyze the sentiment of the review
         sentiment = analyze_review_sentiments(review_text)
 
-        # Post the review (this may depend on your API implementation)
-        post_response = post_review(car_model_id, review_text, sentiment)
-
         return JsonResponse({
             "status": "Review submitted", "sentiment": sentiment
         })
