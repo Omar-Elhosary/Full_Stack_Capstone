@@ -1,6 +1,6 @@
 # Uncomment the imports below before you add the function code
 # import requests
-import os
+import os, requests
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -20,6 +20,7 @@ def get_request(endpoint, **kwargs):
     request_url = backend_url+endpoint+"?"+params
 
     print("GET from {} ".format(request_url))
+    print("\n {} \n".format(request_url))
     try:
         # Call get method of requests library with URL and parameters
         response = requests.get(request_url)
