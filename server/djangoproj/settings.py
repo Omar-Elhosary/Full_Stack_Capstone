@@ -30,11 +30,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    'https://omarzaky646-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',
+    'https://omarzaky646-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',  # noqa
     '127.0.0.1'
 ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://omarzaky646-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',
+    'https://omarzaky646-8000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai',  # noqa
     'http://127.0.0.1:8000'
 ]
 
@@ -101,7 +101,7 @@ DATABASES = {
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':
-        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',  # noqa
     },
     {
         'NAME':
